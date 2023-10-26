@@ -5,11 +5,11 @@ import { Link, useNavigate } from "react-router-dom"
 import axios, { AxiosError } from 'axios';
 import { toast } from "react-hot-toast"
 import { staffAxios } from '../../constraints/axiosIntersepter/staffIntersepter';
+import { useDispatch } from 'react-redux';
+import { staffLogin } from '../../services/redux/slice/staffAuth';
+import { adminLogin } from '../../services/redux/slice/adminAuth';
+import { ErrorResponse } from '../../types/errorInterfaces';
 
-
-interface ErrorResponse {
-    error: string;
-}
 
 
 function Login(props: { loginApi: string, signUpEndPoing: string, loginSuccessEndPoint: string, role: string }) {
@@ -17,6 +17,7 @@ function Login(props: { loginApi: string, signUpEndPoing: string, loginSuccessEn
     const { loginApi, signUpEndPoing, loginSuccessEndPoint, role } = props
     const [showPassword, setShowPassword] = useState(false)
 
+    const dispatch = useDispatch();
     const navigate = useNavigate()
 
 
@@ -43,8 +44,10 @@ function Login(props: { loginApi: string, signUpEndPoing: string, loginSuccessEn
             console.log(response);
             if (role == "staff") {
                 localStorage.setItem('staffToken', response.data.token)
+                dispatch(staffLogin())
             } else if (role == "admin") {
                 localStorage.setItem('adminToken', response.data)
+                dispatch(adminLogin())
             }
             navigate(loginSuccessEndPoint)
 

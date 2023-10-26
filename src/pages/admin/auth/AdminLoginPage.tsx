@@ -7,8 +7,8 @@ function AdminLoginPage() {
     const data = {
         loginApi: adminApis.login,
 
-        signUpEndPoing: adminEndPoint.signup,
-        loginSuccessEndPoint: adminEndPoint.login,
+        signUpEndPoing: "",
+        loginSuccessEndPoint: adminEndPoint.dashboard,
         role: "admin"
     }
     return (
