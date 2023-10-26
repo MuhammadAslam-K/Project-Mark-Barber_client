@@ -57,8 +57,6 @@ const AddNewShope: React.FC = () => {
             );
         } else {
             toast.error("Geolocation is not supported in this browser.");
-            setLatitude(12.971599);
-            setLongitude(77.594566);
         }
         mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
