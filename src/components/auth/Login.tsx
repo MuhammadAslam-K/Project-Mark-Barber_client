@@ -43,7 +43,7 @@ function Login(props: { loginApi: string, signUpEndPoing: string, loginSuccessEn
             const response = await staffAxios.post(loginApi, values)
             console.log(response);
             if (role == "staff") {
-                localStorage.setItem('staffToken', response.data.token)
+                localStorage.setItem('staffToken', response.data)
                 dispatch(staffLogin())
             } else if (role == "admin") {
                 localStorage.setItem('adminToken', response.data)

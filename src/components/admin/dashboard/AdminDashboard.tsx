@@ -34,14 +34,14 @@ function AdminDashboard() {
         <>
             <div className="flex flex-col justify-around sm:flex-row sm:space-x-4 mt-10">
                 <div className="w-full max-w-md mx-auto sm:mx-0 mt-4 sm:mt-0 overflow-hidden rounded-3xl bg-white shadow-2xl">
-                    <div className="p-8">
+                    <div className="p-8 text-center">
                         <h1 className="text-3xl font-black text-blue">Total Staffs</h1>
                         <h1 className="text-3xl font-black text-blue">{dashboardData?.totalStaffs}</h1>
                     </div>
                 </div>
 
                 <div className="w-full max-w-md mx-auto sm:mx-0 mt-4 sm:mt-0 overflow-hidden rounded-3xl bg-white shadow-2xl">
-                    <div className="p-8">
+                    <div className="p-8 text-center">
                         <h1 className="text-3xl font-black text-blue">Total Shops</h1>
                         <h1 className="text-3xl font-black text-blue">{dashboardData?.totalShops}</h1>
                     </div>

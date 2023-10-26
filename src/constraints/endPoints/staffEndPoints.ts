@@ -3,4 +3,8 @@ export default {
     signup: "/staff/signup",
 
     dashboard: "/staff/dashboard",
+
+    // SHOPES
+    shopes: "/staff/shopes",
+    addNewShop: "/staff/shope/add"
 }
