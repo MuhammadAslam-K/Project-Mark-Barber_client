@@ -1,6 +1,10 @@
 export default {
     login: "/admin/login",
-    signup: "/admin/signup",
 
-    dashboard: "/admin/dashboard"
+    // DASHBOARD
+    dashboard: "/admin/dashboard",
+
+    // STAFF
+    approvedStaffs: "/admin/staffs/approved",
+    notApproved: "/admin/staffs/notApproved"
 }

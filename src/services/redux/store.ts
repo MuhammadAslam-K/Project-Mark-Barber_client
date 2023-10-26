@@ -6,8 +6,8 @@ import storage from "redux-persist/lib/storage";
 import { staffAuthSlice } from "./slice/staffAuth";
 import { adminAuthSlice } from "./slice/adminAuth";
 
-const staffPersistConfig = { key: "userAuth", storage, version: 1 };
-const adminPersistConfig = { key: "userAuth", storage, version: 1 };
+const staffPersistConfig = { key: "staffAuth", storage, version: 1 };
+const adminPersistConfig = { key: "adminAuth", storage, version: 1 };
 
 
 const staffAuthPersistReducer = persistReducer(staffPersistConfig, staffAuthSlice.reducer);
