@@ -6,6 +6,4 @@ export default {
 
     // STAFF
     approvedStaffs: "/admin/staffs/approved",
-    notApproved: "/admin/staffs/notApproved",
-
 }

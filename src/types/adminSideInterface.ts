@@ -1,11 +1,11 @@
 export interface staffs {
+    _id: string;
     adminApproved: boolean;
     blocked: boolean;
     email: string;
     mobile: string;
     name: string;
     totalShops: number;
-    _id: string;
 }
 
 export interface adminDashboard {

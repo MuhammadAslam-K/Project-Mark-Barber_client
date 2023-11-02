@@ -3,8 +3,7 @@ export default {
     signUp: "/admin/signup",
 
     // STAFFS   
-    approvedStaffes: "/admin/staffs/approved",
-    notApproved: "/admin/staffs/notapproved",
+    staffs: "/admin/staffs/approved",
 
     approveStaff: "/admin/staff/approve",
     blockUnblockStaffs: "/admin/staff/blockUnblock",
