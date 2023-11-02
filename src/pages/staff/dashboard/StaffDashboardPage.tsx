@@ -3,7 +3,7 @@ import StaffDashboard from "../../../components/staff/dashboard/StaffDashboard"
 
 function StaffDashboardPage() {
     return (
-        <div className="bg-gray-100">
+        <div className="bg-gray-100 h-screen">
             <StaffNavbar />
             <StaffDashboard />
         </div>

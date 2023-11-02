@@ -32,18 +32,22 @@ function AdminDashboard() {
     }, [])
     return (
         <>
-            <div className="flex flex-col justify-around sm:flex-row sm:space-x-4 mt-10">
-                <div className="w-full max-w-md mx-auto sm:mx-0 mt-4 sm:mt-0 overflow-hidden rounded-3xl bg-white shadow-2xl">
-                    <div className="p-8 text-center">
-                        <h1 className="text-3xl font-black text-blue">Total Staffs</h1>
-                        <h1 className="text-3xl font-black text-blue">{dashboardData?.totalStaffs}</h1>
+            <div className="flex flex-wrap justify-around m-10 cursor-pointer">
+                <div className="w-2/3 overflow-hidden rounded-3xl bg-gray-100 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out hover:bg-blue-200 mb-4 sm:w-auto sm:mb-0 sm:mr-4">
+                    <div className="p-6">
+                        <h3 className="text-3xl font-bold text-gray-800 text-center">Total Shop</h3>
+                        <h3 className="text-4xl font-bold text-blue-500 text-center">
+                            {dashboardData?.totalShops}
+                        </h3>
                     </div>
                 </div>
 
-                <div className="w-full max-w-md mx-auto sm:mx-0 mt-4 sm:mt-0 overflow-hidden rounded-3xl bg-white shadow-2xl">
-                    <div className="p-8 text-center">
-                        <h1 className="text-3xl font-black text-blue">Total Shops</h1>
-                        <h1 className="text-3xl font-black text-blue">{dashboardData?.totalShops}</h1>
+                <div className="w-2/3 overflow-hidden rounded-3xl bg-gray-100 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out hover:bg-green-200 mb-4 sm:w-auto sm:mb-0 sm:mx-4">
+                    <div className="p-6">
+                        <h1 className="text-3xl font-bold text-gray-800 text-center">Total Staffs</h1>
+                        <h3 className="text-4xl font-bold text-blue-500 text-center">
+                            {dashboardData?.totalStaffs}
+                        </h3>
                     </div>
                 </div>
             </div>

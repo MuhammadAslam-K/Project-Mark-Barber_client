@@ -1,151 +1,181 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import adminEndPoint from "../../../constraints/endPoints/adminEndPoint";
-import axios, { AxiosError } from "axios";
-import { ErrorResponse } from "../../../types/errorInterfaces";
-import toast from "react-hot-toast";
-import { adminAxios } from "../../../constraints/axiosIntersepter/adminIntersepter";
-import adminApis from "../../../constraints/apis/adminApis";
+import { Suspense, useEffect, useState } from 'react'
+import DataTable from "react-data-table-component"
+import { handleErrors } from '../../../constraints/errorHandler';
+import { adminAxios } from '../../../constraints/axiosIntersepter/adminIntersepter';
+import adminApis from '../../../constraints/apis/adminApis';
 import { staffs } from "../../../types/adminSideInterface";
+
+
 
 function AdminStaffManagement() {
 
-    const [staffs, SetStaffs] = useState<staffs[]>([])
+
+    const [approvedStaffs, SetApprovedStaffs] = useState<staffs[]>([])
+    const [notApprovedStaffs, SetNotApprovedStaffs] = useState<staffs[]>([])
+
+    const [staffs, SetStaffs] = useState(true)
     const [refresh, SetRefresh] = useState(false)
+
+
+    const current_tab = "cursor-pointer bg-gray-300  text-gray-700  py-2 px-4 rounded-t-lg active:bg-white focus:outline-none focus:ring focus:ring-indigo-300"
+    const pre_tab = "cursor-pointer border-gray-400 border-2  text-gray-700 hover:bg-white py-2 px-4 rounded-t-lg active:bg-white focus:outline-none focus:ring focus:ring-indigo-300"
 
 
     useEffect(() => {
         const fetchApproveStaffs = async () => {
             try {
-                const response = await adminAxios.get(adminApis.approvedStaffes)
+                const response = await adminAxios.get(adminApis.staffs)
                 console.log("response", response)
-                SetStaffs(response.data)
+                SetApprovedStaffs(response.data.approvedStaff)
+                SetNotApprovedStaffs(response.data.notApprovedStaff)
             } catch (error) {
                 console.log(error);
-                if (axios.isAxiosError(error)) {
-                    const axiosError: AxiosError<ErrorResponse> = error;
-                    if (axiosError.response) {
-                        toast.error(axiosError.response.data.error);
-                    } else {
-                        toast.error('Network Error occurred.');
-                    }
-                }
+                handleErrors(error)
             }
         }
         fetchApproveStaffs()
     }, [refresh])
 
-    const handleBlockUnblock = async (staffId: string) => {
+
+    const getButtonColor = (approvedStaffs: staffs) => {
+        const red = "text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center  m-2"
+        const blue = "text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2"
+        return approvedStaffs.blocked ? red : blue;
+    };
+
+    const handleBlock = async (id: staffs) => {
         try {
-            const response = await adminAxios.patch(adminApis.blockUnblockStaffs, { staffId })
-            console.log("response", response)
+            await adminAxios.patch(`${adminApis.blockUnblockStaffs}?id=${id._id}`)
             SetRefresh(!refresh)
+
         } catch (error) {
-            console.log(error);
-            if (axios.isAxiosError(error)) {
-                const axiosError: AxiosError<ErrorResponse> = error;
-                if (axiosError.response) {
-                    toast.error(axiosError.response.data.error);
-                } else {
-                    toast.error('Network Error occurred.');
-                }
-            }
+            console.log(error)
+            handleErrors(error)
         }
     }
 
+    const handleApproveStaff = async (id: string) => {
+        try {
+            await adminAxios.patch(`${adminApis.approveStaff}?id=${id}`)
+            SetRefresh(!refresh)
+        } catch (error) {
+            console.log(error)
+            handleErrors(error)
+        }
+    }
+
+
+    const approvedColumns = [
+        {
+            name: 'Name',
+            selector: (row: staffs) => row.name,
+        },
+        {
+            name: 'Email',
+            selector: (row: staffs) => row.email,
+        },
+        {
+            name: 'Mobile',
+            selector: (row: staffs) => row.mobile,
+        },
+        {
+            name: 'Total Shopes',
+            selector: (row: staffs) => row.totalShops,
+        },
+        {
+            name: 'Action',
+            selector: (row: staffs) => (
+                <button
+                    className={getButtonColor(row)}
+                    onClick={() => handleBlock(row)}
+                >
+                    {row.blocked ? 'Unblock' : 'Block'}
+                </button>
+
+            ),
+        },
+    ]
+
+
+    const notApprovedColumns = [
+        {
+            name: 'Name',
+            selector: (row: staffs) => row.name,
+        },
+        {
+            name: 'Email',
+            selector: (row: staffs) => row.email,
+        },
+        {
+            name: 'Mobile',
+            selector: (row: staffs) => row.mobile,
+        },
+        {
+            name: 'Action',
+            selector: (row: staffs) => (
+                <button onClick={() => handleApproveStaff(row._id)}
+                    className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center  m-2'
+                >
+                    Approve
+                </button>
+
+            ),
+        },
+    ]
+
     return (
-        <>
-            <div className="flex h-screen justify-center mt-9" >
+        <div className="mt-10 w-10/12 ms-32 bg-white p-6 rounded-3xl shadow-2xl justify-center">
+            <div className="border-b border-gray-200">
+                <ul className="flex" role="tablist">
+                    <li className="mr-1">
+                        <p
+                            onClick={() => SetStaffs(true)}
+                            className={staffs ? current_tab : pre_tab}
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            Quick Rides
+                        </p>
+                    </li>
 
-                <div className="w-10/12 overflow-hidden rounded-3xl bg-white shadow-2xl sm:flex justify-center">
-                    <div className="w-full ">
-                        <div className="p-8">
-                            <div className="p-8">
-                            </div>
+                    <li className="mr-1">
+                        <p onClick={() => SetStaffs(false)}
+                            className={staffs ? pre_tab : current_tab}
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            Scheduled Rides
+                        </p>
+                    </li>
 
-                            <div className="border-b border-gray-200">
-                                <ul className="flex" role="tablist">
-                                    <li className="mr-1">
-                                        <Link
-                                            to={adminEndPoint.approvedStaffs}
-                                            className="bg-gray-300  text-gray-700  py-2 px-4 rounded-t-lg active:bg-white focus:outline-none focus:ring focus:ring-indigo-300"
-                                            role="tab"
-                                            aria-selected="true"
-                                        >
-                                            Approved
-                                        </Link>
-                                    </li>
+                </ul>
+            </div>
 
-                                    <li className="mr-1">
-                                        <Link
-                                            to={adminEndPoint.notApproved}
-                                            className=" border-gray-400 border-2  text-gray-700 hover:bg-white py-2 px-4 rounded-t-lg active:bg-white focus:outline-none focus:ring focus:ring-indigo-300"
-                                            role="tab"
-                                            aria-selected="true"
-                                        >
-                                            Not Approved
-                                        </Link>
-                                    </li>
+            {staffs ?
+                <Suspense>
+                    <DataTable
+                        style={{ zIndex: '-1' }}
+                        columns={approvedColumns}
+                        data={approvedStaffs}
+                        fixedHeader
+                        highlightOnHover
+                        pagination
+                    />
+                </Suspense>
+                :
 
-                                </ul>
-                            </div>
-
-                            <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
-                                <table className="w-full text-sm text-left text-white  dark:text-white">
-                                    <thead className="text-xs text-white uppercase bg-gray-700 dark:bg-slate-500 dark:text-white border-b-white border-4 font-bold">
-
-                                        <tr>
-                                            <th scope="col" className="px-6 py-3">
-                                                Name
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Email
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Mobile
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Total Shopes
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Action
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {staffs && staffs.map((items) => (
-
-                                            <tr key={items._id} className=" bg-gray-700 dark:bg-slate-400 border-b  dark:border-gray-900  dark:hover:bg-gray-500">
-                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {items.name}
-                                                </th>
-                                                <td className="px-6 py-4 dark:text-white">
-                                                    {items.email}
-                                                </td>
-                                                <td className="px-6 py-4 dark:text-white">
-                                                    {items.mobile}
-                                                </td>
-                                                <td className="px-6 py-4 dark:text-white">
-                                                    {items.totalShops}
-                                                </td>
-                                                <td className="px-6 py-4 dark:text-white">
-                                                    {items.blocked ?
-                                                        <p onClick={() => handleBlockUnblock(items._id)} className="cursor-pointer">Un Block</p> :
-                                                        <p onClick={() => handleBlockUnblock(items._id)} className="cursor-pointer">Block</p>
-                                                    }
-                                                </td>
-
-
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div >
-        </>
+                <Suspense>
+                    <DataTable
+                        style={{ zIndex: '-1' }}
+                        columns={notApprovedColumns}
+                        data={notApprovedStaffs}
+                        fixedHeader
+                        highlightOnHover
+                        pagination
+                    />
+                </Suspense>
+            }
+        </div>
     )
 }
 
