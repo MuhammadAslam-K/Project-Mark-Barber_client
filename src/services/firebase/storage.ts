@@ -1,7 +1,7 @@
 import { storage } from "./config";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
-export const uploadImageToStorage = async (image: string | null, imageName: string | null) => {
+export const uploadImageToStorage = async (image: string | null, imageName: string | null, folder: string) => {
     try {
         if (image) {
             // Fetch the image data from the Blob URL
@@ -11,7 +11,7 @@ export const uploadImageToStorage = async (image: string | null, imageName: stri
             // Create a File object from the Blob with a specified name and MIME type
             const imageFile = new File([blob], imageName || "default-image-name.jpg", { type: blob.type });
 
-            const storageRef = ref(storage, `/images/shope/${imageFile.name}`);
+            const storageRef = ref(storage, `/images/${folder}/${imageFile.name}`);
             await uploadBytes(storageRef, imageFile);
             const downloadURL = await getDownloadURL(storageRef);
             return downloadURL;

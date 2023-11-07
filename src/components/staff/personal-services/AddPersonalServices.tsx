@@ -2,19 +2,19 @@ import { useFormik } from 'formik';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import * as Yup from "yup"
 import { uploadImageToStorage } from '../../../services/firebase/storage';
-import axios, { AxiosError } from 'axios';
-import { ErrorResponse } from '../../../types/errorInterfaces';
 import toast from 'react-hot-toast';
 import { staffAxios } from '../../../constraints/axiosIntersepter/staffIntersepter';
 import staffApis from '../../../constraints/apis/staffApis';
 import { customLoadingStyle } from '../../../constraints/customizeLoaderStyle';
 import mapboxgl from 'mapbox-gl';
+import { personalServices } from '../../../types/staffSideInterface';
+import { handleErrors } from '../../../constraints/errorHandler';
 
 
 
 
 
-const AddNewShope: React.FC = () => {
+const AddPersonalServices: React.FC = () => {
 
 
     const [image1, setImage1] = useState<string | null>(null);
@@ -36,8 +36,8 @@ const AddNewShope: React.FC = () => {
     const [latitude, setLatitude] = useState<number | null>(null);
     const [longitude, setLongitude] = useState<number | null>(null);
 
-    const [shoplatitude, setShopLatitude] = useState<number | null>(null);
-    const [shoplongitude, setShopLongitude] = useState<number | null>(null);
+    const [personLatitude, setpersonLatitude] = useState<number | null>(null);
+    const [personLongitude, setpersonLongitude] = useState<number | null>(null);
 
 
     useEffect(() => {
@@ -77,8 +77,8 @@ const AddNewShope: React.FC = () => {
                     const finalCoordinates = marker.getLngLat();
                     console.log("Final Latitude:", finalCoordinates.lat);
                     console.log("Final Longitude:", finalCoordinates.lng);
-                    setShopLatitude(finalCoordinates.lat)
-                    setShopLongitude(finalCoordinates.lng)
+                    setpersonLatitude(finalCoordinates.lat)
+                    setpersonLongitude(finalCoordinates.lng)
                 });
             });
         }
@@ -136,28 +136,25 @@ const AddNewShope: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            shopeName: "",
-            ownerName: "",
-            ownerEmail: "",
-            ownerMobile: "",
-            shopeLocation: "",
+            name: "",
+            gender: "",
+            email: "",
+            mobile: "",
+            location: "",
             services: "",
         },
         validationSchema: Yup.object({
-            shopeName: Yup.string()
+            name: Yup.string()
                 .min(3, "Type a valid Shope Name")
                 .required("Please Enter value"),
-            ownerName: Yup.string()
-                .min(3, "Type a valid Owner Name")
-                .required("Please Enter value"),
-            ownerEmail: Yup.string()
+            email: Yup.string()
                 .email("Please Enter a valid Email")
                 .required("Please Enter value"),
-            ownerMobile: Yup.string()
+            mobile: Yup.string()
                 .length(10, "Please Enter a valid number")
                 .required("Please Enter value"),
-            shopeLocation: Yup.string()
-                .min(10, "Type a valid Location")
+            location: Yup.string()
+                .min(5, "Type a valid Location")
                 .required("Please Enter value"),
             services: Yup.string()
                 .min(10, "Type a valid Description")
@@ -167,19 +164,15 @@ const AddNewShope: React.FC = () => {
             handleSubmit(values)
         },
     });
-    const handleSubmit = async (values: { shopeName: string; ownerName: string; ownerEmail: string; ownerMobile: string; shopeLocation: string; services: string; }) => {
+    const handleSubmit = async (values: personalServices) => {
         toast.loading('Submitting the form please wait...', {
             style: customLoadingStyle,
-        });
+        })
 
-        console.log("Image Data:", image1);
-        console.log("Image Name:", image1Name);
-
-
-        const Image1 = await uploadImageToStorage(image1, image1Name, "store")
-        const Image2 = await uploadImageToStorage(image2, image2Name, "store")
-        const Image3 = await uploadImageToStorage(image3, image3Name, "store")
-        const Image4 = await uploadImageToStorage(image4, image4Name, "store")
+        const Image1 = await uploadImageToStorage(image1, image1Name, "personal-services")
+        const Image2 = await uploadImageToStorage(image2, image2Name, "personal-services")
+        const Image3 = await uploadImageToStorage(image3, image3Name, "personal-services")
+        const Image4 = await uploadImageToStorage(image4, image4Name, "personal-services")
 
         const formData = {
             ...values,
@@ -187,26 +180,20 @@ const AddNewShope: React.FC = () => {
             Image2,
             Image3,
             Image4,
-            shoplatitude,
-            shoplongitude,
+            personLatitude,
+            personLongitude,
         }
 
         try {
             console.log("form data", formData)
-            await staffAxios.post(staffApis.addShope, formData)
+            const response = await staffAxios.post(staffApis.addPersonalService, formData)
+            console.log("response", response)
             toast.dismiss()
             toast.success("Added the shope successfully")
         } catch (error) {
-            console.log(error);
+            console.log("error", error);
             toast.dismiss()
-            if (axios.isAxiosError(error)) {
-                const axiosError: AxiosError<ErrorResponse> = error;
-                if (axiosError.response) {
-                    toast.error(axiosError.response.data.error);
-                } else {
-                    toast.error('Network Error occurred.');
-                }
-            }
+            handleErrors(error)
         }
     }
 
@@ -216,46 +203,63 @@ const AddNewShope: React.FC = () => {
                 <div className="w-8/12 mb-20 overflow-hidden rounded-3xl bg-gray-100 shadow-2xl sm:flex justify-center">
                     <div className="w-full  ">
                         <div className="p-8 ">
-                            <h1 className="text-3xl font-black text-blue mb-3">Add New Shope</h1>
+                            <h1 className="text-3xl font-black text-blue mb-3">Add New Barber</h1>
                             <form className="" onSubmit={formik.handleSubmit}>
                                 {/* Horizontal inputs */}
                                 <div className="flex flex-col mb-4 sm:flex-row">
                                     <div className="mr-2 w-full">
                                         <input
                                             type="text"
-                                            name="shopeName"
-                                            placeholder="Shop Name"
+                                            name="name"
+                                            placeholder="Name"
                                             required
-                                            value={formik.values.shopeName}
+                                            value={formik.values.name}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             className={
-                                                formik.touched.shopeName && formik.errors.shopeName
+                                                formik.touched.name && formik.errors.name
                                                     ? with_error_class
                                                     : without_error_class
                                             } />
-                                        {formik.touched.shopeName && formik.errors.shopeName && (
-                                            <div className="text-red-500 text-xs">{formik.errors.shopeName}</div>
+                                        {formik.touched.name && formik.errors.name && (
+                                            <div className="text-red-500 text-xs">{formik.errors.name}</div>
                                         )}
                                     </div>
-                                    <div className="mr-2 w-full">
-                                        <input
-                                            type="text"
-                                            name="ownerName"
-                                            placeholder="Owner Name"
-                                            required
-                                            value={formik.values.ownerName}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            className={
-                                                formik.touched.ownerName && formik.errors.ownerName
-                                                    ? with_error_class
-                                                    : without_error_class
-                                            } />
-                                        {formik.touched.ownerName && formik.errors.ownerName && (
-                                            <div className="text-red-500 text-xs">{formik.errors.ownerName}</div>
+                                    <div className={`mr-2 w-full${without_error_class}`}>
+                                        <div className="flex items-center">
+                                            <label className="mr-2">Gender:</label>
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    id="male"
+                                                    name="gender"
+                                                    value="male"
+                                                    checked={formik.values.gender === 'male'}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    className="mr-1"
+                                                />
+                                                <label htmlFor="male">Male</label>
+
+                                                <input
+                                                    type="radio"
+                                                    id="female"
+                                                    name="gender"
+                                                    value="female"
+                                                    checked={formik.values.gender === 'female'}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    className="mr-1 ml-2"
+                                                />
+                                                <label htmlFor="female">Female</label>
+
+                                            </div>
+                                        </div>
+                                        {formik.touched.gender && formik.errors.gender && (
+                                            <div className="text-red-500 text-xs">{formik.errors.gender}</div>
                                         )}
                                     </div>
+
                                 </div>
 
 
@@ -264,39 +268,39 @@ const AddNewShope: React.FC = () => {
                                     <div className="mr-2 w-full">
                                         <input
                                             type="email"
-                                            name="ownerEmail"
-                                            placeholder="Owner Email"
+                                            name="email"
+                                            placeholder="email"
                                             required
-                                            value={formik.values.ownerEmail}
+                                            value={formik.values.email}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             className={
-                                                formik.touched.ownerEmail && formik.errors.ownerEmail
+                                                formik.touched.email && formik.errors.email
                                                     ? with_error_class
                                                     : without_error_class
                                             }
                                         />
-                                        {formik.touched.ownerEmail && formik.errors.ownerEmail && (
-                                            <div className="text-red-500 text-xs">{formik.errors.ownerEmail}</div>
+                                        {formik.touched.email && formik.errors.email && (
+                                            <div className="text-red-500 text-xs">{formik.errors.email}</div>
                                         )}
                                     </div>
                                     <div className="ml-2 w-full">
                                         <input
                                             type="text"
-                                            name="ownerMobile"
-                                            placeholder="owner Mobile"
+                                            name="mobile"
+                                            placeholder="mobile No"
                                             required
-                                            value={formik.values.ownerMobile}
+                                            value={formik.values.mobile}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             className={
-                                                formik.touched.ownerMobile && formik.errors.ownerMobile
+                                                formik.touched.mobile && formik.errors.mobile
                                                     ? with_error_class
                                                     : without_error_class
                                             }
                                         />
-                                        {formik.touched.ownerMobile && formik.errors.ownerMobile && (
-                                            <div className="text-red-500 text-xs">{formik.errors.ownerMobile}</div>
+                                        {formik.touched.mobile && formik.errors.mobile && (
+                                            <div className="text-red-500 text-xs">{formik.errors.mobile}</div>
                                         )}
                                     </div>
                                 </div>
@@ -306,44 +310,40 @@ const AddNewShope: React.FC = () => {
                                     <div className="mr-2 w-full">
                                         <input
                                             type="text"
-                                            name="shopeLocation"
-                                            placeholder="shope Location"
+                                            name="location"
+                                            placeholder="Location"
                                             required
-                                            value={formik.values.shopeLocation}
+                                            value={formik.values.location}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             className={
-                                                formik.touched.shopeLocation && formik.errors.shopeLocation
+                                                formik.touched.location && formik.errors.location
                                                     ? with_error_class
                                                     : without_error_class
                                             }
                                         />
-                                        {formik.touched.shopeLocation && formik.errors.shopeLocation && (
-                                            <div className="text-red-500 text-xs">{formik.errors.shopeLocation}</div>
+                                        {formik.touched.location && formik.errors.location && (
+                                            <div className="text-red-500 text-xs">{formik.errors.location}</div>
                                         )}
 
                                         <input
                                             type="file"
-                                            name="shopeLocation"
                                             required
                                             onChange={handleImageChange1}
                                         />
                                         <input
                                             type="file"
-                                            name="shopeLocation"
                                             required
                                             onChange={handleImageChange2}
                                         />
                                         <input
                                             type="file"
-                                            name="shopeLocation"
                                             required
                                             onChange={handleImageChange3}
                                         />
 
                                         <input
                                             type="file"
-                                            name="shopeLocation"
                                             required
                                             onChange={handleImageChange4}
                                         />
@@ -360,7 +360,7 @@ const AddNewShope: React.FC = () => {
                                             className={`${formik.touched.services && formik.errors.services
                                                 ? with_error_class
                                                 : without_error_class
-                                                } h-40`} // You can adjust the height of the textarea as needed
+                                                } h-40`}
                                         />
                                         {formik.touched.services && formik.errors.services && (
                                             <div className="text-red-500 text-xs">{formik.errors.services}</div>
@@ -386,4 +386,5 @@ const AddNewShope: React.FC = () => {
 }
 
 
-export default AddNewShope
+
+export default AddPersonalServices

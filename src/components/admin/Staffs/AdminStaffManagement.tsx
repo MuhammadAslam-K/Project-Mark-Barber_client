@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataTable from "react-data-table-component"
 import { handleErrors } from '../../../constraints/errorHandler';
 import { adminAxios } from '../../../constraints/axiosIntersepter/adminIntersepter';
@@ -84,18 +84,19 @@ function AdminStaffManagement() {
         },
         {
             name: 'Action',
-            selector: (row: staffs) => (
+            cell: (row: staffs) => (
                 <button
                     className={getButtonColor(row)}
                     onClick={() => handleBlock(row)}
                 >
                     {row.blocked ? 'Unblock' : 'Block'}
                 </button>
-
             ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
         },
-    ]
-
+    ];
 
     const notApprovedColumns = [
         {
@@ -112,16 +113,19 @@ function AdminStaffManagement() {
         },
         {
             name: 'Action',
-            selector: (row: staffs) => (
-                <button onClick={() => handleApproveStaff(row._id)}
+            cell: (row: staffs) => (
+                <button
+                    onClick={() => handleApproveStaff(row._id)}
                     className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center  m-2'
                 >
                     Approve
                 </button>
-
             ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
         },
-    ]
+    ];
 
     return (
         <div className="mt-10 w-10/12 ms-32 bg-white p-6 rounded-3xl shadow-2xl justify-center">
@@ -151,30 +155,14 @@ function AdminStaffManagement() {
                 </ul>
             </div>
 
-            {staffs ?
-                <Suspense>
-                    <DataTable
-                        style={{ zIndex: '-1' }}
-                        columns={approvedColumns}
-                        data={approvedStaffs}
-                        fixedHeader
-                        highlightOnHover
-                        pagination
-                    />
-                </Suspense>
-                :
-
-                <Suspense>
-                    <DataTable
-                        style={{ zIndex: '-1' }}
-                        columns={notApprovedColumns}
-                        data={notApprovedStaffs}
-                        fixedHeader
-                        highlightOnHover
-                        pagination
-                    />
-                </Suspense>
-            }
+            <DataTable
+                style={{ zIndex: '-1' }}
+                columns={staffs ? approvedColumns : notApprovedColumns}
+                data={staffs ? approvedStaffs : notApprovedStaffs}
+                fixedHeader
+                highlightOnHover
+                pagination
+            />
         </div>
     )
 }

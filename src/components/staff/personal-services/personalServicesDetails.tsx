@@ -1,37 +1,28 @@
-import axios, { AxiosError } from "axios";
 import { Suspense, useEffect, useState } from "react"
-import toast from "react-hot-toast";
-import { ErrorResponse } from "../../../types/errorInterfaces";
 import { staffAxios } from "../../../constraints/axiosIntersepter/staffIntersepter";
 import staffApis from "../../../constraints/apis/staffApis";
-import { ShopData } from "../../../types/staffSideInterface";
+import { personalServicesData } from "../../../types/staffSideInterface";
 
 import DataTable from "react-data-table-component"
+import { handleErrors } from "../../../constraints/errorHandler";
 
 
-function ShopesDetails() {
+function PersonalServicesDetails() {
 
-    const [shopeDetails, setShopeDetails] = useState<ShopData[]>([])
+    const [shopeDetails, setShopeDetails] = useState<personalServicesData[]>([])
 
     useEffect(() => {
-        const getShopeDetails = async () => {
+        const getPersonalDetails = async () => {
             try {
-                const response = await staffAxios.get(staffApis.shopeDetails)
+                const response = await staffAxios.get(staffApis.personalServiceDetails)
                 console.log("response", response)
                 setShopeDetails(response.data)
             } catch (error) {
                 console.log(error);
-                if (axios.isAxiosError(error)) {
-                    const axiosError: AxiosError<ErrorResponse> = error;
-                    if (axiosError.response) {
-                        toast.error(axiosError.response.data.error);
-                    } else {
-                        toast.error('Network Error occurred.');
-                    }
-                }
+                handleErrors(error)
             }
         }
-        getShopeDetails()
+        getPersonalDetails()
     }, [])
 
     function formatDate(dateString: string | number | Date) {
@@ -51,23 +42,23 @@ function ShopesDetails() {
 
         {
             name: 'Shop Name',
-            selector: (row: ShopData) => row.shopeName,
+            selector: (row: personalServicesData) => row.name,
         },
         {
-            name: 'Owner Name',
-            selector: (row: ShopData) => row.ownerName,
+            name: 'Gender',
+            selector: (row: personalServicesData) => row.gender,
         },
         {
             name: 'Email',
-            selector: (row: ShopData) => row.ownerEmail,
+            selector: (row: personalServicesData) => row.email,
         },
         {
             name: 'Mobile',
-            selector: (row: ShopData) => row.ownerMobile,
+            selector: (row: personalServicesData) => row.mobile,
         },
         {
             name: 'Listed Date',
-            selector: (row: ShopData) => formatDate(row.listedDate),
+            selector: (row: personalServicesData) => formatDate(row.listedDate),
         },
 
     ]
@@ -95,4 +86,5 @@ function ShopesDetails() {
 }
 
 
-export default ShopesDetails
+
+export default PersonalServicesDetails

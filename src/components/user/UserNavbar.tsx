@@ -9,14 +9,14 @@ function UserNavbar() {
                     <div className="md:flex md:items-center md:justify-between">
                         <div className="flex justify-between items-center">
                             <div className="text-xl font-semibold text-gray-700">
-                                <Link to={userEndPoints.home} className="text-gray-800 text-xl font-bold hover:text-gray-700 md:text-2xl">Marke Barber</Link>
+                                <Link to={userEndPoints.home} className="text-gray-800 text-xl font-bold hover:text-gray-700 md:text-2xl">Mark Barber</Link>
                             </div>
 
                             {/*  Mobile menu button  */}
                             <div className="flex md:hidden">
                                 <button type="button" className="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu">
                                     <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current">
-                                        <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
+                                        <path fillRule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
                                     </svg>
                                 </button>
                             </div>
