@@ -74,7 +74,7 @@ function ShopesDetails() {
 
     return (
         <>
-            <div className="flex h-screen justify-center mt-9" >
+            <div className="w-10/12 rounded-xl shadow-2xl mx-auto mt-10" >
                 <Suspense>
                     {shopeDetails &&
                         <DataTable
