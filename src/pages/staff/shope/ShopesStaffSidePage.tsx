@@ -3,7 +3,7 @@ import ShopesDetails from '../../../components/staff/shopes/ShopesDetails'
 
 function ShopesStaffSidePage() {
     return (
-        <div className="bg-gray-100">
+        <div className="bg-gray-100 h-screen">
             <StaffNavbar />
             <ShopesDetails />
         </div>

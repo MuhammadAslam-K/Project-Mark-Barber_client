@@ -134,7 +134,7 @@ function AdminStaffManagement() {
                             role="tab"
                             aria-selected="true"
                         >
-                            Quick Rides
+                            Approved Staffs
                         </p>
                     </li>
 
@@ -144,7 +144,7 @@ function AdminStaffManagement() {
                             role="tab"
                             aria-selected="true"
                         >
-                            Scheduled Rides
+                            Not Approved Staffs
                         </p>
                     </li>
 
