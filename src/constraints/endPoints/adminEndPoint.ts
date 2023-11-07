@@ -5,5 +5,10 @@ export default {
     dashboard: "/admin/dashboard",
 
     // STAFF
-    approvedStaffs: "/admin/staffs/approved",
+    approvedStaffs: "/admin/staffs",
+
+    // Personal-Services
+    PersonalServices: "/admin/Personal-Services",
+
+    shopes: "/admin/shopes"
 }

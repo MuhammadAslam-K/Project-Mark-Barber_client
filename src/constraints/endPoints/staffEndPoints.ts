@@ -6,5 +6,9 @@ export default {
 
     // SHOPES
     shopes: "/staff/shopes",
-    addNewShop: "/staff/shope/add"
+    addNewShop: "/staff/shope/add",
+
+    // PERSONAL-SERVICES
+    addPersonalServices: "/staff/personal-services/add",
+    personalServices: "/staff/personal-services",
 }

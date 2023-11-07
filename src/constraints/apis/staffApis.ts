@@ -6,6 +6,10 @@ export default {
     addShope: "/staff/shop/add",
     shopeDetails: "/staff/shopeDetails",
 
+    // PERSONAL-SERVICES
+    addPersonalService: "/staff/personalService/add",
+    personalServiceDetails: "/staff/personalServiceDetails",
+
     // DASHBOARD
-    dashboard: "/staff/dashboard"
+    dashboard: "/staff/dashboard",
 }

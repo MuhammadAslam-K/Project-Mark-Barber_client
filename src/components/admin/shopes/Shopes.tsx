@@ -1,12 +1,9 @@
-import axios, { AxiosError } from "axios";
 import { Suspense, useEffect, useState } from "react"
-import toast from "react-hot-toast";
-import { ErrorResponse } from "../../../types/errorInterfaces";
-import { staffAxios } from "../../../constraints/axiosIntersepter/staffIntersepter";
-import staffApis from "../../../constraints/apis/staffApis";
 import { ShopData } from "../../../types/staffSideInterface";
-
 import DataTable from "react-data-table-component"
+import { adminAxios } from "../../../constraints/axiosIntersepter/adminIntersepter";
+import adminApis from "../../../constraints/apis/adminApis";
+import { handleErrors } from "../../../constraints/errorHandler";
 
 
 function ShopesDetails() {
@@ -16,19 +13,12 @@ function ShopesDetails() {
     useEffect(() => {
         const getShopeDetails = async () => {
             try {
-                const response = await staffAxios.get(staffApis.shopeDetails)
+                const response = await adminAxios.get(adminApis.shopesDetails)
                 console.log("response", response)
                 setShopeDetails(response.data)
             } catch (error) {
                 console.log(error);
-                if (axios.isAxiosError(error)) {
-                    const axiosError: AxiosError<ErrorResponse> = error;
-                    if (axiosError.response) {
-                        toast.error(axiosError.response.data.error);
-                    } else {
-                        toast.error('Network Error occurred.');
-                    }
-                }
+                handleErrors(error)
             }
         }
         getShopeDetails()
@@ -89,6 +79,7 @@ function ShopesDetails() {
                         }
                     </Suspense>
                 </div>
+
             </div >
         </>
     )

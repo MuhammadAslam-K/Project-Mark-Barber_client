@@ -36,7 +36,7 @@ function StaffDashboard() {
                 </div>
 
                 <div className="w-2/3 overflow-hidden rounded-3xl bg-gray-100 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out hover:bg-green-200 mb-4 sm:w-auto sm:mb-0 sm:mx-4">
-                    <Link to={staffEndPoints.addNewShop} >
+                    <Link to={staffEndPoints.addPersonalServices} >
                         <div className="p-6">
                             <h1 className="text-3xl font-bold text-gray-800 text-center">Add New Barber</h1>
                         </div>
