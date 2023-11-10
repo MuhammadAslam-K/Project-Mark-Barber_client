@@ -35,7 +35,7 @@ interface Personal {
 
 function UserHome() {
 
-    const backgroundImageUrl = "/public/images/banner2.jpg"
+    const backgroundImageUrl = "/images/banner2.jpg"
     const [tab, SetTab] = useState('')
     const [shope, SetShope] = useState(true)
     const [shopData, SetShopData] = useState<Shop[] | null>(null)
@@ -206,61 +206,70 @@ function UserHome() {
             <div className="flex my-10 mb-36 justify-center">
                 {shope ?
                     <div className="w-10/12 max-h-96">
-                        {shopData && shopData.map((shop) => (
-                            <div className="flex rounded-2xl h-96 bg-gray-200 p-4 mb-6" key={shop._id}>
-                                <div className="lg:w-1/3 h-72 lg:h-64 mb-4 lg:mb-0">
-                                    <Slider {...sliderSettings}>
-                                        {shop.images.map((image, index) => (
-                                            <div key={index}>
-                                                <img
-                                                    src={image}
-                                                    alt={`Shop ${index + 1}`}
-                                                    className="w-full h-80 object-cover"
-                                                />
-                                            </div>
-                                        ))}
-                                    </Slider>
-                                </div>
+                        {shopData &&
+                            shopData.map((shop) => (
+                                <div
+                                    className="flex flex-col lg:flex-row rounded-2xl bg-gray-200 p-4 mb-6"
+                                    key={shop._id}
+                                >
+                                    <div className="lg:w-1/3 h-72 lg:h-64 mb-4 lg:mb-0">
+                                        <Slider {...sliderSettings}>
+                                            {shop.images.map((image, index) => (
+                                                <div key={index}>
+                                                    <img
+                                                        src={image}
+                                                        alt={`Shop ${index + 1}`}
+                                                        className="w-full h-80 object-cover"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                    </div>
 
-                                <div className="lg:w-2/3 lg:pl-4 flex flex-col">
-                                    <h2 className="text-2xl font-bold mb-2">{shop.shopeName}</h2>
-                                    <p className="text-gray-700">Owner: {shop.ownerName}</p>
-                                    <p className="text-gray-700">Contact: {shop.ownerMobile}</p>
-                                    <p className="text-gray-700">Email: {shop.ownerEmail}</p>
-                                    <p className="text-gray-700">Location: {shop.shopeLocation}</p>
-                                    <p className="text-gray-700">Services: {shop.services}</p>
+                                    <div className="lg:w-2/3 lg:pl-4 flex flex-col">
+                                        <h2 className="text-2xl font-bold mb-2">{shop.shopeName}</h2>
+                                        <p className="text-gray-700">Owner: {shop.ownerName}</p>
+                                        <p className="text-gray-700">Contact: {shop.ownerMobile}</p>
+                                        <p className="text-gray-700">Email: {shop.ownerEmail}</p>
+                                        <p className="text-gray-700">Location: {shop.shopeLocation}</p>
+                                        <p className="text-gray-700">Services: {shop.services}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
+
                     :
                     <div className="w-10/12 max-h-96">
-                        {personalData && personalData.map((shop) => (
-                            <div className="flex rounded-2xl h-96 bg-gray-200 p-4 mb-6" key={shop._id}>
-                                <div className="lg:w-1/3 h-72 lg:h-64 mb-4 lg:mb-0">
-                                    <Slider {...sliderSettings}>
-                                        {shop.images.map((image, index) => (
-                                            <div key={index}>
-                                                <img
-                                                    src={image}
-                                                    alt={`Shop ${index + 1}`}
-                                                    className="w-full h-80 object-cover"
-                                                />
-                                            </div>
-                                        ))}
-                                    </Slider>
-                                </div>
+                        {personalData &&
+                            personalData.map((shop) => (
+                                <div
+                                    className="flex flex-col lg:flex-row rounded-2xl bg-gray-200 p-4 mb-6"
+                                    key={shop._id}
+                                >
+                                    <div className="lg:w-1/3 h-72 lg:h-64 mb-4 lg:mb-0">
+                                        <Slider {...sliderSettings}>
+                                            {shop.images.map((image, index) => (
+                                                <div key={index}>
+                                                    <img
+                                                        src={image}
+                                                        alt={`Shop ${index + 1}`}
+                                                        className="w-full h-80 object-cover sm:w-auto sm:h-auto"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                    </div>
 
-                                <div className="lg:w-2/3 lg:pl-4">
-                                    <p className="text-gray-700">Owner: {shop.name}</p>
-                                    <p className="text-gray-700">Contact: {shop.mobile}</p>
-                                    <p className="text-gray-700">Email: {shop.email}</p>
-                                    <p className="text-gray-700">Gender: {shop.gender}</p>
-                                    <p className="text-gray-700">Location: {shop.personalLocation}</p>
-                                    <p className="text-gray-700">Services: {shop.services}</p>
+                                    <div className="lg:w-2/3 lg:pl-4 max-w-xs sm:max-w-full">
+                                        <p className="text-gray-700">Owner: {shop.name}</p>
+                                        <p className="text-gray-700">Contact: {shop.mobile}</p>
+                                        <p className="text-gray-700">Email: {shop.email}</p>
+                                        <p className="text-gray-700">Gender: {shop.gender}</p>
+                                        <p className="text-gray-700">Location: {shop.personalLocation}</p>
+                                        <p className="text-gray-700">Services: {shop.services}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 }
             </div>

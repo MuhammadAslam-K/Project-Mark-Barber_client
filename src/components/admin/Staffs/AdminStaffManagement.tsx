@@ -83,6 +83,10 @@ function AdminStaffManagement() {
             selector: (row: staffs) => row.totalShops,
         },
         {
+            name: 'Total Personal Services',
+            selector: (row: staffs) => row.totalPersonalServices,
+        },
+        {
             name: 'Action',
             cell: (row: staffs) => (
                 <button
@@ -128,7 +132,7 @@ function AdminStaffManagement() {
     ];
 
     return (
-        <div className="mt-10 w-10/12 ms-32 bg-white p-6 rounded-3xl shadow-2xl justify-center">
+        <div className="mt-10 lg:w-10/12 w-full mx-auto bg-white p-6 rounded-3xl shadow-2xl justify-center">
             <div className="border-b border-gray-200">
                 <ul className="flex" role="tablist">
                     <li className="mr-1">
