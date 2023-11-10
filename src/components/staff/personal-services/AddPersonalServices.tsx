@@ -200,7 +200,7 @@ const AddPersonalServices: React.FC = () => {
     return (
         <>
             <div className="flex w-full mt-10  justify-center bg-gray-100">
-                <div className="w-8/12 mb-20 overflow-hidden rounded-3xl bg-gray-100 shadow-2xl sm:flex justify-center">
+                <div className="lg:w-8/12 w-full mb-20 overflow-hidden rounded-3xl bg-gray-100 shadow-2xl sm:flex justify-center">
                     <div className="w-full  ">
                         <div className="p-8 ">
                             <h1 className="text-3xl font-black text-blue mb-3">Add New Barber</h1>

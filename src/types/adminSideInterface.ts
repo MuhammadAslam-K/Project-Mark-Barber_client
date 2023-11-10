@@ -6,6 +6,7 @@ export interface staffs {
     mobile: string;
     name: string;
     totalShops: number;
+    totalPersonalServices: number
 }
 
 export interface adminDashboard {
